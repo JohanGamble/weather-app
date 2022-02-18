@@ -19,7 +19,7 @@ export class UserInputComponent implements OnInit, OnDestroy {
   inputFieldId: string = "cityWeatherInput";
   unconfirmedFormat: boolean = false;
   placeholder: string = "Enter a city...";
-  errorNotice: string = "Format of city entry: New York, US"
+  errorNotice: string = "Format of city entry : New York City, US"
   options = new Set<string>();
   myControl = new FormControl();
   listCityNames: string[] = [];
