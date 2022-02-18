@@ -1,5 +1,5 @@
 {
-  "name": "weather-app",
+  "name": "weatherapp",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -9,11 +9,13 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~12.2.0",
+    "@angular/animations": "^12.2.16",
+    "@angular/cdk": "^13.2.0",
     "@angular/common": "~12.2.0",
     "@angular/compiler": "~12.2.0",
     "@angular/core": "~12.2.0",
     "@angular/forms": "~12.2.0",
+    "@angular/material": "^13.2.0",
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
@@ -25,6 +27,7 @@
     "@angular-devkit/build-angular": "~12.2.6",
     "@angular/cli": "~12.2.6",
     "@angular/compiler-cli": "~12.2.0",
+    "@types/google.maps": "^3.47.4",
     "@types/node": "^12.11.1",
     "typescript": "~4.3.5"
   }

@@ -1,0 +1,86 @@
+@use "src/global"
+
+.module
+    display: flex
+    flex-flow: row wrap
+    width: 100%
+    opacity: 100%
+    column-gap: 10px
+    row-gap: 10px
+    box-shadow: 0px 1px 2px 1px #ccc
+    margin-bottom: 10px
+    padding: 10px
+    animation: easein-module 2s 1 ease-in
+
+.module-mod
+    display: inline-flex
+    flex-direction: column
+    padding: inherit
+    box-shadow: 0px 1px 2px 1px #ccc
+    border-radius: 6px
+    width: auto
+    animation: easein-module 3s 1 ease-in
+
+.layout
+    display: inline-flex
+    flex-wrap: wrap
+
+.image-container
+    display: inline-flex
+    flex-direction: column
+    align-items: center
+
+.bar
+    height: auto
+    width: auto
+    display: inline-flex
+    flex-direction: column
+    align-items: center
+    padding: 10px
+    // border-right: 1px solid #ddd
+    // Hover effect: box-shadow: 0px 1px 2px 0px #aaa;
+    animation: easein-module 4s 1 ease-in
+
+.temp-bar
+    background-color: #ccc
+    height: 200px
+    width: 30px
+    border-radius: 14px
+    box-shadow: 0px 2px 3px 0px #aaa
+
+.cold
+    @include global.weather
+    background: global.$cold
+
+.mild
+    @include global.weather
+    background: global.$mild
+
+.warm
+    @include global.weather
+    background: global.$warm
+
+.hot
+    @include global.weather
+    background: global.$hot
+
+.mat-expansion-panel-header
+    padding: 14px 24px
+
+button
+    height: 100%
+    width: fit-content
+    align-self: flex-end
+    border: none
+    border-radius: 10px
+    color: #aaa
+    background-color: transparent
+
+span
+    padding: inherit
+
+@keyframes easein-module
+    from
+        opacity: 0%
+    to
+        opacity: 100%

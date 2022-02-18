@@ -1,0 +1,11 @@
+<div *ngFor="let w of weather">
+    <div class="city">
+        <div class="image-container">
+            <img class="icon" src="https://openweathermap.org/img/wn/{{w.icon}}@2x.png" alt="Weather icon" />
+        </div>
+        <span>{{w.name}}</span>
+        <button (click)="refreshWeather(w)">
+            <img title="refresh" src="./assets/sync-alt-solid.svg" />
+        </button>
+    </div>
+</div>

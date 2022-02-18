@@ -1,0 +1,16 @@
+<input 
+    #inputFieldText
+    matInput
+    [id]="inputFieldId"
+    class="if0"
+    [placeholder]="unconfirmedFormat ? errorNotice : placeholder"
+    [formControl]="myControl"
+    [matAutocomplete]="auto"
+    (keyup.enter)="userQueryEvent(inputFieldText.value)"
+    type="text"/>
+
+<mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+       {{option}}
+    </mat-option>
+</mat-autocomplete>

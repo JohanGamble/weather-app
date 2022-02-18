@@ -1,0 +1,58 @@
+<div *ngFor="let props of wP">
+  <div class="module">
+    <div class="module-mod">
+      <button (click)="removeModule($event)">&#x2716;</button>
+      <span>Current Temperature: {{props.main.temp - 272 | number: '1.0-0'}}°C</span>
+      <span>Humidity: {{props.main.humidity}}%</span>
+      <span>Visibility: {{props.visibility}}m</span>
+      <span>Wind Speed: {{props.wind.speed}}m/s</span>
+      <span>Wind Degree: {{props.wind.deg}}°</span>
+      <span>Wind Gust: {{props.wind.gust}}</span>
+      <span>Cloud: {{props.clouds.all}} Oktas</span>
+      <span>Country: {{props.sys.country}}</span>
+      <span>Sunrise: {{props.sys.sunrise | date:'h:mm a'}}</span>
+      <span>Sunset: {{props.sys.sunset | date:'h:mm a'}}</span>
+      <span>Feels like: {{props.main.feels_like - 272 | number: '1.0-0'}}°C</span>
+      <span>Max Temp. {{props.main.temp_max - 272 | number: '1.0-0'}}°C</span>
+      <span>Min Temp. {{props.main.temp_min - 272 | number: '1.0-0'}}°C</span>
+    </div>
+    <div class="module-mod">
+      <button (click)="removeModule($event)">&#x2716;</button>
+      <app-google-maps [coord]="coord"></app-google-maps>
+    </div>
+    <div class="module-mod">
+      <button (click)="removeModule($event)">&#x2716;</button>
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Weekly Forecast
+            </mat-panel-title>
+            <mat-panel-description>
+              <!-- Notify the user if conditions are available -->
+              Current forecast {{weatherDetailAvailability ? 'Available' : 'Unavailable'}} {{dateTime
+              |date:'shortTime'}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div *ngFor="let props of wFP">
+            <div class="layout">
+              <div *ngFor="let daily of props.daily">
+                <div class="bar">
+                  <div *ngFor="let wi of daily.weather">
+                    <div class="image-container">
+                      <img class="icon" src="https://openweathermap.org/img/wn/{{wi.icon}}@2x.png" alt="Weather icon" />
+                      <span>{{wi.main}}</span>
+                    </div>
+                  </div>
+                  <span>{{daily.temp.max - 272 | number: '1.0-0'}}°C</span>
+                  <div class="temp-bar {{daily.temp.weatherIndicator}}"></div>
+                  <span>{{daily.temp.min - 272 | number: '1.0-0'}}°C</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
