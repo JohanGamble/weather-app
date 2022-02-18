@@ -1,0 +1,1 @@
+(()=>{"use strict";addEventListener("message",({data:e})=>{postMessage(e)})})();
