@@ -1,1 +1,0 @@
-(()=>{"use strict";addEventListener("message",({data:r})=>{const e=class{static sortResults(e=[]){const s=new Intl.Collator(void 0,{numeric:!0,sensitivity:"base"});return e.sort((t,n)=>s.compare(t,n))}static processServerResponse(e){let s=JSON.parse(e);return s=s.map(t=>t.name),s=this.sortResults(s),s}}.processServerResponse(r);postMessage(e)})})();

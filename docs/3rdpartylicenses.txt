@@ -63,6 +63,9 @@ THE SOFTWARE.
 @angular/platform-browser
 MIT
 
+primeng
+MIT
+
 rxjs
 Apache-2.0
                                Apache License
