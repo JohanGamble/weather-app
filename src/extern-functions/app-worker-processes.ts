@@ -1,6 +1,6 @@
 export class ProcessServerData {
 
-    static sortResults(arr = []) {
+    static sortResults(arr = []): any[] {
         const collator = new Intl.Collator(undefined, {
             numeric: true,
             sensitivity: 'base'
@@ -11,15 +11,9 @@ export class ProcessServerData {
     static processServerResponse(data: string): any[] {
         let serverResponse = JSON.parse(data);
 
-        serverResponse = serverResponse.map((city:any) => city['name']);
+        serverResponse = serverResponse.map((city: any) => city['name']);
         serverResponse = this.sortResults(serverResponse);
 
-        // if (serverResponse._coord.length) {
-        //     serverResponse = this.sortResults(serverResponse._coord);
-        // }
-        // if (serverResponse._name.length) {
-        //     serverResponse = this.sortResults(serverResponse._name);
-        // }
         return serverResponse;
     }
 }

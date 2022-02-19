@@ -45,9 +45,7 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
             () => { return "Request call completed" });
         this.subscription = this.weatherService.getNearestCities().subscribe(
             (result: any) => {
-                let processedResults = ProcessServerData.processServerResponse(result);
-                this.cityNames = processedResults;
-                this.contentService.cityNamesAnnounced(this.cityNames);
+                this.activateWorker(result);
             }
         )
     }
@@ -99,6 +97,23 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
                 this.weather.splice(result, 1);
                 break;
             }
+        }
+    }
+
+    private activateWorker(result: string) {
+        if (typeof Worker !== 'undefined') {
+            // Create a new
+            const worker = new Worker(new URL('../app.worker', import.meta.url));
+            worker.onmessage = ({ data }) => {
+                this.cityNames = data;
+                this.contentService.cityNamesAnnounced(this.cityNames);
+                console.log("List of cities available");
+            };
+            worker.postMessage(result);
+        } else {
+            let processedResults = ProcessServerData.processServerResponse(result);
+            this.cityNames = processedResults;
+            this.contentService.cityNamesAnnounced(this.cityNames);
         }
     }
 
