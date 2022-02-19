@@ -11,6 +11,7 @@ export class ProcessServerData {
     static processServerResponse(data: string): any[] {
         let serverResponse = JSON.parse(data);
 
+        // add more processes
         serverResponse = serverResponse.map((city: any) => city['name']);
         serverResponse = this.sortResults(serverResponse);
 

@@ -7,6 +7,8 @@ import { InputNotificationService } from "../services/input.service";
 import { PopupNotificationService } from "../services/popup.service";
 import { WeatherPublishingService } from "../services/weather-property-publishing-service";
 import { IWeather, IWeatherForecastProperties, IWeatherProperties, WeatherService } from "../services/weather-service";
+// PrimeNG
+import { MessageService } from 'primeng/api';
 
 // Helper function
 import { extractProperty, IJSONProperties } from 'src/extern-functions/extern-functions';
@@ -30,6 +32,7 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
         private weatherService: WeatherService,
         private weatherPublishingService: WeatherPublishingService,
         private inputNotificationService: InputNotificationService,
+        private messageService: MessageService,
         private popupNotificationService: PopupNotificationService
     ) { }
 
@@ -107,7 +110,7 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
             worker.onmessage = ({ data }) => {
                 this.cityNames = data;
                 this.contentService.cityNamesAnnounced(this.cityNames);
-                console.log("List of cities available");
+                this.showTopLeft();
             };
             worker.postMessage(result);
         } else {
@@ -115,6 +118,10 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
             this.cityNames = processedResults;
             this.contentService.cityNamesAnnounced(this.cityNames);
         }
+    }
+
+    showTopLeft() {
+        this.messageService.add({ key: 'tl', severity: 'info', detail: 'List of cities are now available.' });
     }
 
     ngOnDestroy(): void {

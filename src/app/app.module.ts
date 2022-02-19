@@ -20,10 +20,15 @@ import { WeatherPublishingService } from './services/weather-property-publishing
 import { InputNotificationService } from './services/input.service';
 import { PopupNotificationService } from './services/popup.service';
 import { ContentService } from './services/content-service';
+// PrimeNG
+import { MessageService } from 'primeng/api';
 
 // Angular Materials
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
+// PrimeNG
+import { ToastModule } from 'primeng/toast'
 
 @NgModule({
   declarations: [
@@ -42,16 +47,21 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     ReactiveFormsModule,
     HttpClientModule,
 
-    // Materials
+    // Angular Materials
     MatExpansionModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+
+    // PrimeNG
+    ToastModule,
   ],
   providers: [
     ContentService,
     InputNotificationService,
     PopupNotificationService,
     WeatherService,
-    WeatherPublishingService
+    WeatherPublishingService,
+    // Prime
+    MessageService
   ],
 
   bootstrap: [AppComponent]
