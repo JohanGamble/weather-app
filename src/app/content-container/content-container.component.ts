@@ -6,7 +6,7 @@ import { ContentService } from "../services/content-service";
 import { InputNotificationService } from "../services/input.service";
 import { PopupNotificationService } from "../services/popup.service";
 import { WeatherPublishingService } from "../services/weather-property-publishing-service";
-import { IWeather, IWeatherForecastProperties, IWeatherProperties, WeatherService } from "../services/weather-service";
+import { Weather, WeatherForecastProperties, WeatherProperties, WeatherService } from "../services/weather-service";
 // PrimeNG
 import { MessageService } from 'primeng/api';
 
@@ -24,8 +24,9 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription | undefined;
     private param = "";
-    weather: IWeather[] = [];
-    cityNames: string[] = []
+    weather: Weather = new Weather();
+    listOfCities: any[] = [];
+    cityNames: string[] = [];
 
     constructor(
         private contentService: ContentService,
@@ -48,6 +49,7 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
             () => { return "Request call completed" });
         this.subscription = this.weatherService.getNearestCities().subscribe(
             (result: any) => {
+                this.listOfCities = result;
                 this.activateWorker(result);
             }
         )
@@ -58,7 +60,7 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
             this.param = param;
         }
         this.subscription = this.weatherService.getCurrentWeather(this.param).subscribe(
-            (wp: IWeatherProperties) => {
+            (wp: WeatherProperties) => {
                 let jpi: IJSONProperties = {
                     container: wp.weather, prop: "icon"
                 }
@@ -69,10 +71,12 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
                 let country = wp.sys.country;
                 let iconkey = extractProperty(jpi);
                 let desc = extractProperty(jpd);
-                this.weather[0] = { name: cityName, icon: iconkey, description: desc, country: country };
-                this.contentService.initialWeatherAnnounced(this.weather[0]);
+                // Must be a single object
+                this.weather = { name: cityName, icon: iconkey, description: desc, country: country };
+                this.contentService.initialWeatherAnnounced(this.weather);
                 this.weatherPublishingService.confirmedWeather(true);
                 this.weatherPublishingService.announceWeather(wp);
+                this.activeLatWorker(wp.coord);
                 this.cityWeatherForecastRequest(wp.coord.lat, wp.coord.lon);
                 this.popupNotificationService.announceUpdateOfInputState(true);
             },
@@ -85,38 +89,49 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
 
     cityWeatherForecastRequest(lat: number, lon: number): void {
         this.subscription = this.weatherService.getSevenDayForecast(lat, lon).subscribe(
-            (wFP: IWeatherForecastProperties) => {
+            (wFP: WeatherForecastProperties) => {
                 this.weatherPublishingService.announceWeatherForecast(wFP);
             });
     }
 
     // A published event from the menu child component
-    refreshWeatherService(w: IWeather): void {
-        for (let cityName = 0; cityName < this.weather.length; cityName++) {
-            if (this.weather[cityName].name == w.name) {
-                this.inputNotificationService.clickAnnouncementMade(w);
-                this.cityWeatherRequest(w.name);
-                let result = this.weather.indexOf(w);
-                this.weather.splice(result, 1);
-                break;
-            }
+    refreshWeatherService(w: Weather): void {
+        if (this.weather?.name == w.name) {
+            this.inputNotificationService.clickAnnouncementMade(w);
+            this.cityWeatherRequest(w.name);
+        } else {
+            this.inputNotificationService.clickAnnouncementMade(w);
+            this.cityWeatherRequest(w.name);
         }
     }
 
     private activateWorker(result: string) {
         if (typeof Worker !== 'undefined') {
             // Create a new
-            const worker = new Worker(new URL('../app.worker', import.meta.url));
-            worker.onmessage = ({ data }) => {
+            const cityWorker = new Worker(new URL('../app.cityWorker', import.meta.url));
+            cityWorker.onmessage = ({ data }) => {
                 this.cityNames = data;
                 this.contentService.cityNamesAnnounced(this.cityNames);
                 this.showTopLeft();
             };
-            worker.postMessage(result);
+            cityWorker.postMessage(result);
         } else {
             let processedResults = ProcessServerData.processServerResponse(result);
             this.cityNames = processedResults;
             this.contentService.cityNamesAnnounced(this.cityNames);
+        }
+    }
+
+    private activeLatWorker(coord: any) {
+        if (typeof Worker !== 'undefined') {
+            const latWorker = new Worker(new URL('../app.latWorker', import.meta.url));
+            latWorker.onmessage = ({ data }) => {
+                this.contentService.derivedCitiesAnnounced(data);
+            };
+            latWorker.postMessage({ cities: this.listOfCities, currentCoords: coord });
+        } else {
+            let processedResults = ProcessServerData.deriveNearbyCities({ cities: this.listOfCities, currentCoords: coord });
+            this.contentService.derivedCitiesAnnounced(processedResults);
         }
     }
 

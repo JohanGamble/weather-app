@@ -1,11 +1,21 @@
-<div *ngFor="let w of weather">
-    <div class="city">
-        <div class="image-container">
-            <img class="icon" src="https://openweathermap.org/img/wn/{{w.icon}}@2x.png" alt="Weather icon" />
+<div class="city" *ngIf="weather.name">
+    <div class="image-container">
+        <img class="icon" src="https://openweathermap.org/img/wn/{{weather.icon}}@2x.png" alt="Weather icon" />
+    </div>
+    <span>{{weather.name}}</span>
+    <button (click)="refreshWeather(weather)">
+        <img title="refresh" src="./assets/sync-alt-solid.svg" />
+    </button>
+</div>
+<div class="derived-container" *ngIf="derivedCities.length">
+    <div *ngFor="let derived of derivedCities">
+        <div class="city">
+            <button (click)="refreshWeather(derived)">
+                <p class="derived">
+                    <span class="circle"></span>
+                    {{derived.name}}
+                </p>
+            </button>
         </div>
-        <span>{{w.name}}</span>
-        <button (click)="refreshWeather(w)">
-            <img title="refresh" src="./assets/sync-alt-solid.svg" />
-        </button>
     </div>
 </div>

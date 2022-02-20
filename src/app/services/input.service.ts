@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IWeather } from './weather-service';
+import { Weather } from './weather-service';
 
 @Injectable()
 export class InputNotificationService {
 
     // Observable Input source
     private notifySiblingOfKeyboardEvent = new Subject<string>();
-    private notifySiblingOfButtonClickEvent = new Subject<IWeather>();
+    private notifySiblingOfButtonClickEvent = new Subject<Weather>();
 
     // Observable Input stream
     inputEventAnnounced$ = this.notifySiblingOfKeyboardEvent.asObservable();
@@ -21,7 +21,7 @@ export class InputNotificationService {
             this.notifySiblingOfKeyboardEvent.error(err);
         }
     }
-    clickAnnouncementMade(value: IWeather): void {
+    clickAnnouncementMade(value: Weather): void {
         try {
             this.notifySiblingOfButtonClickEvent.next(value);
         } catch (err) {

@@ -1,1 +1,7 @@
-<h1 class="header">City Forecast for {{title}}</h1>
+<div class="header-container">
+    <h1 class="header">City Forecast for {{title}}</h1>
+    <p class="derived" *ngIf="indicator">
+        <span class="circle"></span>
+        Derived Cities
+    </p>
+</div>

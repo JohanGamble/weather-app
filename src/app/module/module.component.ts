@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { IWeatherForecastProperties, IWeatherProperties } from '../services/weather-service';
+import { WeatherForecastProperties, WeatherProperties } from '../services/weather-service';
 
 // Services
 import { PopupNotificationService } from '../services/popup.service';
@@ -15,11 +15,11 @@ import { WeatherPublishingService } from '../services/weather-property-publishin
 export class ModuleComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription | undefined;
-    wP: IWeatherProperties[] = [];
-    wFP: IWeatherForecastProperties[] = [];
+    wP: WeatherProperties[] = [];
+    wFP: WeatherForecastProperties[] = [];
     panelOpenState: boolean = true;
     weatherDetailAvailability: boolean = false;
-    coord = { lat: 0, lng: 0};
+    coord = { lat: 0, lng: 0 };
     dateTime = (new Date).getTime();
 
     constructor(
@@ -36,7 +36,7 @@ export class ModuleComponent implements OnInit, OnDestroy {
             },
             () => { return "Request call completed"; });
         this.subscription = this.weatherPublishingService.weatherAnnounced$.subscribe(
-            (forecast: IWeatherProperties) => {
+            (forecast: WeatherProperties) => {
                 this.wP[0] = forecast;
                 // Google maps uses the property "lng"
                 this.coord = { lat: forecast.coord.lat, lng: forecast.coord.lon };
@@ -47,7 +47,7 @@ export class ModuleComponent implements OnInit, OnDestroy {
             },
             () => { return "Request call completed"; });
         this.subscription = this.weatherPublishingService.weatherForecastAnnounced$.subscribe(
-            (wFP: IWeatherForecastProperties) => {
+            (wFP: WeatherForecastProperties) => {
                 this.wFP[0] = wFP;
                 this.wFP[0].daily = this.weatherIndicator(wFP.daily);
             },

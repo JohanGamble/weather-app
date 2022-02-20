@@ -6,6 +6,7 @@
 export function isNullOrWhitespace(input: string): boolean {
     return !input || !input.trim();
 }
+
 /**
 * User input function
 * @param {String} str
@@ -18,20 +19,31 @@ export function replaceAll(str: string, find: string, replace: string): string {
     return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
 }
 
-
 /**
 * User input function
-* @param {String} str
-* @returns {String}
+* @param {string} str
+* @returns {string}
 **/
 function escapeRegExp(str: string): string {
     return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
 /**
+* Range of values function
+* @param {number} value
+* @returns {number}
+**/
+export function isRange(value: number, range: any) {
+    if (typeof value !== 'number') {
+        return false;
+    }
+    return value >= range['lower'] && value <= range['upper'];
+}
+
+/**
 * Property extraction interface
 * @param {IJSONProperties} container
-* @param {String | Number} prop
+* @param {string | number} prop
 **/
 
 export interface IJSONProperties {

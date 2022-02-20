@@ -1,3 +1,30 @@
+.header-container
+    display: grid
+    grid-template-columns: 72% 24%
+
 .header
     font-style: oblique
     color: #bbb
+
+// should be inherited from a base    
+.derived
+    display: inline-flex
+    align-self: center
+    justify-content: flex-end
+    width: 100%
+    font: menu
+    animation: easein-element 1s 1 ease-in
+
+.circle
+    border-radius: 60%
+    width: 5px
+    height: 5px
+    background-color: red
+    align-self: center
+    margin-right: 2%
+
+@keyframes easein-element
+    from
+        opacity: 0%
+    to
+        opacity: 100%

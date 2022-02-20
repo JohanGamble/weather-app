@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from 'rxjs';
-import { IWeather } from '../services/weather-service';
+import { Weather } from '../services/weather-service';
 
 // Services
 import { ContentService } from "../services/content-service";
@@ -16,14 +16,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription | undefined;
     title: string = "";
-    weather: IWeather | undefined;
+    weather: Weather = new Weather();
+    indicator: boolean = false
 
     constructor(private contentService: ContentService) { }
 
     ngOnInit(): void {
         this.subscription = this.contentService.initialWeatherAnnounced$.subscribe(
-            (w: IWeather) => {
+            (w: Weather) => {
                 this.title = w.name + ', ' + w.country;
+            });
+        this.subscription = this.contentService.derivedCitiesAnnounced$.subscribe(
+            (d: any[]) => {
+                if (d.length > 0) {
+                    this.indicator = true;
+                } else {
+                    this.indicator = false;
+                }
             }
         )
     }

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { IWeatherForecastProperties, IWeatherProperties } from './weather-service';
+import { WeatherForecastProperties, WeatherProperties } from './weather-service';
 
 @Injectable()
 export class WeatherPublishingService {
 
   // Observable WeatherProperties sources
-  private announcedWeatherSource = new Subject<IWeatherProperties>();
-  private announcedWeatherForecastSource = new Subject<IWeatherForecastProperties>();
+  private announcedWeatherSource = new Subject<WeatherProperties>();
+  private announcedWeatherForecastSource = new Subject<WeatherForecastProperties>();
   private confirmedWeatherSource = new Subject<boolean>();
 
   // Observable WeatherProperties streams
@@ -17,7 +17,7 @@ export class WeatherPublishingService {
   weatherConfirmed$ = this.confirmedWeatherSource.asObservable();
 
   // Service message commands
-  announceWeather(forecast: IWeatherProperties): void {
+  announceWeather(forecast: WeatherProperties): void {
     try {
       this.announcedWeatherSource.next(forecast);
     } catch (err) {
@@ -25,7 +25,7 @@ export class WeatherPublishingService {
     }
   }
 
-  announceWeatherForecast(forecast: IWeatherForecastProperties): void {
+  announceWeatherForecast(forecast: WeatherForecastProperties): void {
     try {
       this.announcedWeatherForecastSource.next(forecast);
     } catch (err) {
