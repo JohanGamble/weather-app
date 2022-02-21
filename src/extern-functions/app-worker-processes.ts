@@ -15,6 +15,14 @@ export class ProcessServerData {
         return arr;
     }
 
+    static focusView([latResults, lonResults]: any): any[] {
+        if (latResults.length) {
+            return latResults;
+        } else {
+            return lonResults;
+        }
+    }
+
     static nearestCities(data: any): any[] {
         let scale: number = 0.0001;
         let latRange: any = {
@@ -30,18 +38,9 @@ export class ProcessServerData {
         return this.focusView([latResults, lonResults]);
     }
 
-
-    static focusView([latResults, lonResults]: any): any[] {
-        if (latResults.length) {
-            return latResults;
-        } else {
-            return lonResults;
-        }
-    }
-
     static processServerResponse(data: string): any[] {
         let serverResponse = JSON.parse(data);
-        serverResponse = serverResponse.map((city: any) => city['name']);
+        serverResponse = serverResponse.map((city: any) => city['name'] + ', ' + city['country']);
         serverResponse = this.sortResults(serverResponse);
         return serverResponse;
     }
