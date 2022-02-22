@@ -71,7 +71,6 @@ export class ContentContainerComponent implements OnInit, OnDestroy {
                 let country = wp.sys.country;
                 let iconkey = extractProperty(jpi);
                 let desc = extractProperty(jpd);
-                // Must be a single object
                 this.weather = { name: cityName, icon: iconkey, description: desc, country: country };
                 this.contentService.initialWeatherAnnounced(this.weather);
                 this.weatherPublishingService.confirmedWeather(true);

@@ -22,7 +22,6 @@ export class MenuComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.subscription = this.contentService.initialWeatherAnnounced$.subscribe(
             (w: Weather) => {
-                // Must be a single object
                 this.weather = w;
             });
         this.subscription = this.contentService.derivedCitiesAnnounced$.subscribe(

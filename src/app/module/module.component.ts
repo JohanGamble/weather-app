@@ -15,8 +15,8 @@ import { WeatherPublishingService } from '../services/weather-property-publishin
 export class ModuleComponent implements OnInit, OnDestroy {
 
     private subscription: Subscription | undefined;
-    wP: WeatherProperties[] = [];
-    wFP: WeatherForecastProperties[] = [];
+    wP: WeatherProperties = new WeatherProperties();
+    wFP: WeatherForecastProperties = new WeatherForecastProperties();
     panelOpenState: boolean = true;
     weatherDetailAvailability: boolean = false;
     coord = { lat: 0, lng: 0 };
@@ -37,7 +37,7 @@ export class ModuleComponent implements OnInit, OnDestroy {
             () => { return "Request call completed"; });
         this.subscription = this.weatherPublishingService.weatherAnnounced$.subscribe(
             (forecast: WeatherProperties) => {
-                this.wP[0] = forecast;
+                this.wP = forecast;
                 // Google maps uses the property "lng"
                 this.coord = { lat: forecast.coord.lat, lng: forecast.coord.lon };
             },
@@ -48,8 +48,8 @@ export class ModuleComponent implements OnInit, OnDestroy {
             () => { return "Request call completed"; });
         this.subscription = this.weatherPublishingService.weatherForecastAnnounced$.subscribe(
             (wFP: WeatherForecastProperties) => {
-                this.wFP[0] = wFP;
-                this.wFP[0].daily = this.weatherIndicator(wFP.daily);
+                this.wFP = wFP;
+                this.wFP.daily = this.weatherIndicator(wFP.daily);
             },
             (e: Error) => {
                 return new Error("Reqeust error based on: " + e);
